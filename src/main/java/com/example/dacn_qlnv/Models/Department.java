@@ -27,7 +27,7 @@ public class Department {
     @JoinColumn(name = "manager_id")
     private Employee manager;*/
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department")
     @JsonIgnore
     private List<Employee> employees;
 

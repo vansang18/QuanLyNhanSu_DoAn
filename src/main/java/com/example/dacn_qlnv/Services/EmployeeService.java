@@ -21,4 +21,29 @@ public class EmployeeService {
     public List<Employee> getResignedEmployees() {
         return employeeRepository.findByIsResignedTrue();
     }
+
+    public void saveEmployee(Employee employee) {
+        employeeRepository.save(employee);
+    }
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElse(null);
+    }
+    public void updateEmployee(Long id, Employee updatedEmployee) {
+        Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+        if (existingEmployee != null) {
+            existingEmployee.setFirstName(updatedEmployee.getFirstName());
+            existingEmployee.setLastName(updatedEmployee.getLastName());
+            existingEmployee.setEmail(updatedEmployee.getEmail());
+            existingEmployee.setPhoneNumber(updatedEmployee.getPhoneNumber());
+            existingEmployee.setDateOfBirth(updatedEmployee.getDateOfBirth());
+            existingEmployee.setGender(updatedEmployee.getGender());
+            existingEmployee.setDepartment(updatedEmployee.getDepartment());
+            existingEmployee.setHireDate(updatedEmployee.getHireDate());
+            employeeRepository.save(existingEmployee);
+        }
+
+    }
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
 }

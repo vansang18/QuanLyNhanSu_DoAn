@@ -2,6 +2,7 @@ package com.example.dacn_qlnv.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -30,12 +31,14 @@ public class Employee {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
     @Column(name = "gender")
     private String gender;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "hire_date", nullable = false)
     private Date hireDate;
 
