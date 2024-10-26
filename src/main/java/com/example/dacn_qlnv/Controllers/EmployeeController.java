@@ -19,6 +19,7 @@ public class EmployeeController {
     @Autowired
     private DepartmentService departmentService;
 
+
     @GetMapping("/list")
     public String listEmployees(Model model) {
         List<Employee> activeEmployees = employeeService.getActiveEmployees();

@@ -1,5 +1,7 @@
 package com.example.dacn_qlnv;
 
+import com.example.dacn_qlnv.Services.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,16 +18,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error",
+                        .requestMatchers("/css/**", "/js/**", "/", "/login", "/register", "/error",
                                 "/forgot-password", "/reset-password", "/images/**")
                         .permitAll()
                         .requestMatchers("/changePassword").authenticated()
-                        //.anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .loginProcessingUrl("/sign/login") // Đường dẫn xử lý đăng nhập
-                        .defaultSuccessUrl("/products")
+                        .loginProcessingUrl("/login") // Đường dẫn xử lý đăng nhập
+                        .defaultSuccessUrl("/home")
                         .failureUrl("/login?error")
                         .permitAll()
                 )

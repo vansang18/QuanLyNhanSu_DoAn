@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmployeeService implements UserDetailsService {
+public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -58,25 +58,7 @@ public class EmployeeService implements UserDetailsService {
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Employee employee = employeeRepository.findByEmail(email);
-        if (employee == null) {
-            throw new UsernameNotFoundException("Người dùng không tìm thấy: " + email);
-        }
-
-        // Trả về UserDetails với các thông tin cần thiết
-        return org.springframework.security.core.userdetails.User
-                .withUsername(employee.getEmail())
-                .password(employee.getPassword()) // Mật khẩu đã được mã hóa
-                .authorities(employee.getRoles().stream()
-                        .map(role -> "ROLE_" + role.getName()) // Thêm tiền tố ROLE_ cho vai trò
-                        .toArray(String[]::new))
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(false)
-                .build();
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 }
