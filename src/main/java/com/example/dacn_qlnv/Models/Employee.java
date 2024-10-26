@@ -55,5 +55,7 @@ public class Employee {
     @Column(name = "resignation_date")
     private Date resignationDate;
 
+    @Column(name = "password", nullable = false) // Add password field
+    private String password;
 
 }
