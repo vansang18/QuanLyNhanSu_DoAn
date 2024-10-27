@@ -64,7 +64,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .anyRequest().permitAll() // Cho phép tất cả mọi yêu cầu
+                        .anyRequest().permitAll() // Cho phép tất cả mọi yêu cầu...
                 )
                 ;
 
