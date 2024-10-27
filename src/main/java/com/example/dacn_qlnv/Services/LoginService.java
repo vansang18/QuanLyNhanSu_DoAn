@@ -18,6 +18,7 @@ public class LoginService {
     public boolean authenticate(String email, String password) {
         Employee employee = employeeRepository.findByEmail(email);
         if (employee != null) {
+            // So sánh mật khẩu được nhập vào với mật khẩu đã mã hóa trong cơ sở dữ liệu
             return passwordEncoder.matches(password, employee.getPassword());
         }
         return false; // Nếu không tìm thấy nhân viên

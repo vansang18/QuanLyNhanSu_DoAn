@@ -1,7 +1,5 @@
 package com.example.dacn_qlnv;
 
-import com.example.dacn_qlnv.Services.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,10 +17,8 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/css/**", "/js/**", "/", "/login", "/register", "/error",
-                                "/forgot-password", "/reset-password", "/images/**")
-                        .permitAll()
-                        .requestMatchers("/changePassword").authenticated()
-                        .anyRequest().authenticated()
+                                "/forgot-password", "/reset-password", "/images/**").permitAll()
+                        //.anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
@@ -31,6 +27,7 @@ public class SecurityConfig {
                         .failureUrl("/login?error")
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
@@ -43,9 +40,9 @@ public class SecurityConfig {
         return http.build();
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Sử dụng BCrypt để mã hóa mật khẩu
+        return new BCryptPasswordEncoder();
     }
 }
-

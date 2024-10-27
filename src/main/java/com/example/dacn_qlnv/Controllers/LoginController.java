@@ -24,7 +24,7 @@ public class LoginController {
             // Đăng nhập thành công, chuyển hướng đến trang chính
             return "redirect:/home";
         }
-        // Đăng nhập thất bại, quay lại trang đăng nhập
-        return "redirect:/login?error";
+        // Đăng nhập thất bại, quay lại trang đăng nhập với thông báo lỗi
+        return "redirect:/login?error=true";
     }
 }

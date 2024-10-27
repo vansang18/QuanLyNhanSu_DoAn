@@ -51,6 +51,7 @@ public class EmployeeService {
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setDepartment(updatedEmployee.getDepartment());
             existingEmployee.setHireDate(updatedEmployee.getHireDate());
+            existingEmployee.setSalary(updatedEmployee.getSalary());
             employeeRepository.save(existingEmployee);
         }
     }
