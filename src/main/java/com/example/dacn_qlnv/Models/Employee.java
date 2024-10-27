@@ -1,9 +1,10 @@
 package com.example.dacn_qlnv.Models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.Set;
@@ -19,6 +20,11 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "username", length = 50, unique = true)
+    @NotBlank(message = "Username is required")
+    @Size(min = 1, max = 50, message = "Username must be between 1 and 50 characters")
+    private String username;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -66,4 +72,28 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles; // Thêm thuộc tính roles
+
+    public Employee(Long employeeId) {
+
+    }
+
+    public String getAuthorities() {
+        return null;
+    }
+
+    public boolean isAccountNonExpired() {
+            return true;
+    }
+
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -18,13 +18,13 @@ public class LoginController {
         return "sign/login"; // Trả về trang đăng nhập
     }
 
-    @PostMapping("/login")
-    public String authenticate(@RequestParam String email, @RequestParam String password) {
-        if (loginService.authenticate(email, password)) {
-            // Đăng nhập thành công, chuyển hướng đến trang chính
-            return "redirect:/home";
-        }
-        // Đăng nhập thất bại, quay lại trang đăng nhập với thông báo lỗi
-        return "redirect:/login?error=true";
-    }
+//    @PostMapping("/login")
+//    public String authenticate(@RequestParam String email, @RequestParam String password) {
+//        if (loginService.authenticate(email, password)) {
+//            // Đăng nhập thành công, chuyển hướng đến trang chính
+//            return "redirect:/home";
+//        }
+//        // Đăng nhập thất bại, quay lại trang đăng nhập với thông báo lỗi
+//        return "redirect:/login?error=true";
+//    }
 }

@@ -1,7 +1,7 @@
 package com.example.dacn_qlnv.Config;
 
-import com.example.dacn_qlnv.chat.ChatMessage;
-import com.example.dacn_qlnv.chat.MessageType;
+import com.example.dacn_qlnv.Chat.ChatMessage;
+import com.example.dacn_qlnv.Chat.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

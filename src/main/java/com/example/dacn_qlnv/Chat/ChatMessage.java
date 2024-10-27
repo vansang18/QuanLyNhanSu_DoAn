@@ -1,4 +1,4 @@
-package com.example.dacn_qlnv.chat;
+package com.example.dacn_qlnv.Chat;
 
 import lombok.*;
 
