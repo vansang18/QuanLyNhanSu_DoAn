@@ -2,22 +2,31 @@ package com.example.dacn_qlnv.Services;
 
 import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Repositories.EmployeeRepository;
+import com.example.dacn_qlnv.Repositories.IEmployeeRepository;
+import com.example.dacn_qlnv.Repositories.IRoleRepository;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class EmployeeService {
+@Slf4j
+@Transactional
+public class EmployeeService implements UserDetailsService {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private IEmployeeRepository employeeRepository;
+
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private IRoleRepository roleRepository;
+
 
     // Phương thức để lấy danh sách nhân viên đang làm việc
     public List<Employee> getActiveEmployees() {
@@ -29,10 +38,7 @@ public class EmployeeService {
     }
 
     public void saveEmployee(Employee employee) {
-        if (employee.getPassword() != null && !employee.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(employee.getPassword());
-            employee.setPassword(encodedPassword);
-        }
+        employee.setPassword(new BCryptPasswordEncoder().encode(employee.getPassword()));
         employeeRepository.save(employee);
     }
 
@@ -59,7 +65,25 @@ public class EmployeeService {
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
     }
-    public Employee getEmployeeByEmail(String email) {
-        return employeeRepository.findByEmail(email);
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws
+            UsernameNotFoundException {
+        var employee = employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return org.springframework.security.core.userdetails.User
+                .withUsername(employee.getUsername())
+                .password(employee.getPassword())
+                .authorities(employee.getAuthorities())
+                .accountExpired(!employee.isAccountNonExpired())
+                .accountLocked(!employee.isAccountNonLocked())
+                .credentialsExpired(!employee.isCredentialsNonExpired())
+                .disabled(!employee.isEnabled())
+                .build();
+    }
+
+    // Tìm kiếm người dùng dựa trên tên đăng nhập.
+    public Optional<Employee> findByUsername(String username) throws UsernameNotFoundException {
+        return employeeRepository.findByUsername(username);
     }
 }

@@ -4,7 +4,6 @@ import com.example.dacn_qlnv.Models.Department;
 import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Services.DepartmentService;
 import com.example.dacn_qlnv.Services.EmployeeService;
-import com.example.dacn_qlnv.Services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +20,8 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private DepartmentService departmentService;
+
+
 
 
     @GetMapping("/list")
@@ -66,12 +67,12 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-    @GetMapping("/user")
-    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        Employee user = LoginService.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        model.addAttribute("user", user);
-        return "in4";  // Hiển thị thông tin người dùng
-    }
+//    @GetMapping("/user")
+//    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+//        Employee user = EmployeeService.findByUsername(userDetails.getUsername())
+//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+//
+//        model.addAttribute("user", user);
+//        return "in4";  // Hiển thị thông tin người dùng
+//    }
 }
