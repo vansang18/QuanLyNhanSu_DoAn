@@ -11,6 +11,6 @@ public class HomeController {
     }
     @GetMapping("/chatting")
     public String index() {
-        return "home/index"; // Trả về tên file không có phần mở rộng
+        return "home/index"; //
     }
 }

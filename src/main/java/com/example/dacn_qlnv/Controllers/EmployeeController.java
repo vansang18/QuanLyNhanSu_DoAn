@@ -67,12 +67,5 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-//    @GetMapping("/user")
-//    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-//        Employee user = EmployeeService.findByUsername(userDetails.getUsername())
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//
-//        model.addAttribute("user", user);
-//        return "in4";  // Hiển thị thông tin người dùng
-//    }
+
 }

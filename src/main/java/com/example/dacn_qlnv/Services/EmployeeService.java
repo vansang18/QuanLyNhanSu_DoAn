@@ -1,6 +1,7 @@
 package com.example.dacn_qlnv.Services;
 
 import com.example.dacn_qlnv.Models.Employee;
+import com.example.dacn_qlnv.Role;
 import com.example.dacn_qlnv.Repositories.EmployeeRepository;
 import com.example.dacn_qlnv.Repositories.IEmployeeRepository;
 import com.example.dacn_qlnv.Repositories.IRoleRepository;
@@ -66,6 +67,15 @@ public class EmployeeService implements UserDetailsService {
         employeeRepository.deleteById(id);
     }
 
+    public void setDefaultRole(String username) {
+        employeeRepository.findByUsername(username).ifPresentOrElse(
+                user -> {
+                    user.getRoles().add(roleRepository.findRoleById(Role.EMPLOYEE.value));
+                    employeeRepository.save(user);
+                },
+                () -> { throw new UsernameNotFoundException("User not found"); }
+        );
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws
             UsernameNotFoundException {
