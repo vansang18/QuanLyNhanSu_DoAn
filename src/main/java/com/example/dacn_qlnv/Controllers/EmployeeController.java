@@ -7,6 +7,7 @@ import com.example.dacn_qlnv.Services.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+@ControllerAdvice
 @Controller
 @RequestMapping("/employees")
 @RequiredArgsConstructor
@@ -71,4 +75,17 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
+    @ModelAttribute
+    public void addEmployeeToModel(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Optional<Employee> employeeOptional = employeeService.findByUsername(username);
+            if (employeeOptional.isPresent()) {
+                Employee employee = employeeOptional.get();
+                model.addAttribute("employee", employee);
+            }
+        }
+    }
+
 }

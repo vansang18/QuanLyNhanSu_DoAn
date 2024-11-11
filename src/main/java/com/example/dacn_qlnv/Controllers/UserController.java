@@ -1,9 +1,11 @@
 package com.example.dacn_qlnv.Controllers;
 
+import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Services.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -70,5 +74,18 @@ public class UserController {
             model.addAttribute("message", "Invalid password reset token.");
             return "sign/login";
         }
+    }
+    @GetMapping("/profile") // Đường dẫn đến trang thông tin cá nhân
+    public String viewProfile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Optional<Employee> employeeOptional = employeeService.findByUsername(username);
+            if (employeeOptional.isPresent()) {
+                Employee employee = employeeOptional.get();
+                model.addAttribute("employee", employee);
+            }
+        }
+        return "employees/profile"; // Trả về tên view
     }
 }
