@@ -13,4 +13,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
 
     List<Employee> findByIsResignedFalse();
     List<Employee> findByIsResignedTrue();
+    Optional<Employee> findByEmail(String email);
+    Optional<Employee> findByResetToken(String resetToken);
+
 }

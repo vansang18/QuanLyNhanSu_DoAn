@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -27,6 +28,9 @@ public class EmployeeService implements UserDetailsService {
 
     @Autowired
     private IRoleRepository roleRepository;
+
+    @Autowired
+    private MailService mailService;
 
 
     // Phương thức để lấy danh sách nhân viên đang làm việc
@@ -96,4 +100,45 @@ public class EmployeeService implements UserDetailsService {
     public Optional<Employee> findByUsername(String username) throws UsernameNotFoundException {
         return employeeRepository.findByUsername(username);
     }
+
+    // Thay đổi mật khẩu người dùng.
+    public void changePassword(String username, String newPassword) {
+        Employee user = employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        employeeRepository.save(user);
+    }
+
+    // Đặt lại mật khẩu người dùng.
+    public void resetPassword(String email) {
+        Optional<Employee> userOptional = employeeRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            Employee employee = userOptional.get();
+            String token = UUID.randomUUID().toString();
+            employee.setResetToken(token);
+            employeeRepository.save(employee);
+
+            String resetLink = "http://localhost:8080/reset-password?token=" + token;
+            String message = "Click the link below to reset your password:\n" + resetLink;
+            mailService.sendEmail(employee.getEmail(), "Password Reset Request", message);
+        }
+    }
+
+    // Xác nhận token đặt lại mật khẩu.
+    public boolean validateResetToken(String token) {
+        Optional<Employee> userOptional = employeeRepository.findByResetToken(token);
+        return userOptional.isPresent();
+    }
+
+    // Cập nhật mật khẩu người dùng dựa trên token đặt lại mật khẩu.
+    public void updatePassword(String token, String newPassword) {
+        Optional<Employee> userOptional = employeeRepository.findByResetToken(token);
+        if (userOptional.isPresent()) {
+            Employee employee = userOptional.get();
+            employee.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+            employee.setResetToken(null);
+            employeeRepository.save(employee);
+        }
+    }
+
 }

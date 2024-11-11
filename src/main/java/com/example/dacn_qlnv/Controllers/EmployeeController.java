@@ -4,8 +4,11 @@ import com.example.dacn_qlnv.Models.Department;
 import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Services.DepartmentService;
 import com.example.dacn_qlnv.Services.EmployeeService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @Controller
 @RequestMapping("/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
 
     @Autowired
@@ -67,5 +71,4 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-
 }

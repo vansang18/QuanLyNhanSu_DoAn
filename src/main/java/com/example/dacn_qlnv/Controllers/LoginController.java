@@ -3,8 +3,11 @@ package com.example.dacn_qlnv.Controllers;
 import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Repositories.IEmployeeRepository;
 import com.example.dacn_qlnv.Services.EmployeeService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,4 +54,6 @@ public class LoginController {
         // Nếu đăng nhập thành công, chuyển hướng đến trang chính
         return "redirect:/home"; // Chuyển hướng đến trang chính sau khi đăng nhập
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.dacn_qlnv.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -67,8 +68,11 @@ public class Employee implements UserDetails {
     @Column(name = "resignation_date")
     private Date resignationDate;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false) // Add password field
     private String password;
+    @Column(name = "reset_token", length = 250)
+    private String resetToken; // Thêm trường resetToken
 
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "employee_role",
