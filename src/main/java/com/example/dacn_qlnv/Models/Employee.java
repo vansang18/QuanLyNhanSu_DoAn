@@ -2,6 +2,7 @@ package com.example.dacn_qlnv.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,7 @@ public class Employee {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Pattern(regexp = "\\d{10}", message = "Số điện thoại phải chứa từ 10 đến 15 chữ số.")
     @Column(name = "phone_number")
     private String phoneNumber;
 

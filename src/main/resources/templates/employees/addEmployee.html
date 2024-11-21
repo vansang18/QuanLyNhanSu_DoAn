@@ -39,7 +39,18 @@
 
       <div class="mb-3">
         <label for="phoneNumber" class="form-label">Số điện thoại</label>
-        <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}">
+        <input type="number"
+               class="form-control"
+               id="phoneNumber"
+               th:field="*{phoneNumber}"
+               pattern="\d{10}"
+               maxlength="10"
+               minlength="10"
+               title="Số điện thoại phải là 10 chữ số."
+               required>
+      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}">
+        <span th:errors="*{phoneNumber}"></span>
       </div>
 
       <div class="mb-3">

@@ -46,4 +46,12 @@ public class EmployeeService {
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
     }
+
+    //Tìm kiếm nhân viên trong danh sách
+    public List<Employee> searchEmployees(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return employeeRepository.findAll();
+        }
+        return employeeRepository.searchByKeyword(keyword.toLowerCase());
+    }
 }

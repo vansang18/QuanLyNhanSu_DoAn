@@ -62,4 +62,12 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
+
+    @GetMapping
+    public String listEmployees(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
+        List<Employee> employees = employeeService.searchEmployees(keyword);
+        model.addAttribute("activeEmployees", employees);
+        model.addAttribute("keyword", keyword); // Hiển thị lại từ khóa tìm kiếm trong form
+        return "employees/employeeList";
+    }
 }

@@ -23,9 +23,6 @@ public class Department {
     @Column(name = "name", nullable = false)
     private String name;
 
-  /*  @OneToOne
-    @JoinColumn(name = "manager_id")
-    private Employee manager;*/
 
     @OneToMany(mappedBy = "department")
     @JsonIgnore
