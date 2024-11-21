@@ -24,33 +24,27 @@
     <form th:action="@{/employees/add}" th:object="${employee}" method="post">
       <div class="mb-3">
         <label for="firstName" class="form-label">Tên</label>
-        <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
       </div>
 
       <div class="mb-3">
         <label for="lastName" class="form-label">Họ</label>
-        <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Tên đăng nhập</label>
+        <input type="text" class="form-control" id="username" th:field="*{username}" required>
       </div>
 
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" th:field="*{email}">
+        <input type="email" class="form-control" id="email" th:field="*{email}" required>
       </div>
 
       <div class="mb-3">
         <label for="phoneNumber" class="form-label">Số điện thoại</label>
-        <input type="number"
-               class="form-control"
-               id="phoneNumber"
-               th:field="*{phoneNumber}"
-               pattern="\d{10}"
-               maxlength="10"
-               minlength="10"
-               title="Số điện thoại phải là 10 chữ số."
-               required>
-      </div>
-      <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}">
-        <span th:errors="*{phoneNumber}"></span>
+        <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
       </div>
 
       <div class="mb-3">
@@ -60,7 +54,7 @@
 
       <div class="mb-3">
         <label for="gender" class="form-label">Giới tính</label>
-        <select class="form-select" id="gender" th:field="*{gender}">
+        <select class="form-select" id="gender" th:field="*{gender}" required>
           <option value="Nam">Nam</option>
           <option value="Nữ">Nữ</option>
           <option value="Khác">Khác</option>
@@ -69,7 +63,7 @@
 
       <div class="mb-3">
         <label for="department" class="form-label">Phòng ban</label>
-        <select class="form-select" id="department" th:field="*{department.id}">
+        <select class="form-select" id="department" th:field="*{department.id}" required>
           <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
         </select>
       </div>
@@ -77,6 +71,12 @@
       <div class="mb-3">
         <label for="hireDate" class="form-label">Ngày vào làm</label>
         <input type="date" th:field="*{hireDate}" class="form-control" id="hireDate" required>
+      </div>
+
+      <!-- Thêm trường nhập mật khẩu -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input type="password" class="form-control" id="password" th:field="*{password}" required>
       </div>
 
       <button type="submit" class="btn btn-primary">Thêm</button>

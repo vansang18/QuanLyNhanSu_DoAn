@@ -79,6 +79,11 @@
                 <input type="date" class="form-control" id="hireDate" th:field="*{hireDate}">
             </div>
 
+            <div class="mb-3">
+                <label for="salary" class="form-label">Lương</label>
+                <input type="number" class="form-control" id="salary" th:field="*{salary}" step="0.01">
+            </div>
+
             <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>
     </div>

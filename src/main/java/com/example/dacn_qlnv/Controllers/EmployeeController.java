@@ -4,20 +4,33 @@ import com.example.dacn_qlnv.Models.Department;
 import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Services.DepartmentService;
 import com.example.dacn_qlnv.Services.EmployeeService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+@ControllerAdvice
 @Controller
 @RequestMapping("/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
     @Autowired
     private DepartmentService departmentService;
+
+
+
 
     @GetMapping("/list")
     public String listEmployees(Model model) {
@@ -62,12 +75,17 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-
-    @GetMapping
-    public String listEmployees(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<Employee> employees = employeeService.searchEmployees(keyword);
-        model.addAttribute("activeEmployees", employees);
-        model.addAttribute("keyword", keyword); // Hiển thị lại từ khóa tìm kiếm trong form
-        return "employees/employeeList";
+    @ModelAttribute
+    public void addEmployeeToModel(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Optional<Employee> employeeOptional = employeeService.findByUsername(username);
+            if (employeeOptional.isPresent()) {
+                Employee employee = employeeOptional.get();
+                model.addAttribute("employee", employee);
+            }
+        }
     }
+
 }

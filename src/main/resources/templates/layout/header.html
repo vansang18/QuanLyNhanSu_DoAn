@@ -1,16 +1,17 @@
-<!-- header.html -->
 <div class="header">
     <div class="company-name">STC</div>
     <div class="dropdown">
         <a class="text-white dropdown-toggle d-flex align-items-center" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-user me-2"></i>
-            John Doe
+            <!-- Hiển thị tên nhân viên -->
+            <span th:text="${employee.firstName} + ' ' + ${employee.lastName}">Tên Nhân Viên</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+            <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+            <li><a class="dropdown-item" href="/changePassword">Đổi mật khẩu</a></li>
+            <li><a class="dropdown-item" href="/chatting">Phòng Chat</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+            <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
         </ul>
     </div>
 </div>
