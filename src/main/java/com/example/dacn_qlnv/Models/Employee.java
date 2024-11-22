@@ -61,7 +61,7 @@ public class Employee implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
-
+//UPDATE `qlns`.`employees` SET `is_resigned` = 0 WHERE (`id` = 2);
     @Column(name = "is_resigned")
     private boolean isResigned = false; // true nếu nhân viên đã nghỉ việc
 
