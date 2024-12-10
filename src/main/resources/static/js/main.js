@@ -33,17 +33,61 @@ function connect(event) {
 
 
 function onConnected() {
-    // Subscribe to the Public Topic
+    // Subscribe to Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 
-    // Tell your username to the server
+    // Gửi tên người dùng lên server
     stompClient.send("/app/chat.addUser",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
-    )
+    );
 
     connectingElement.classList.add('hidden');
+
+    // Tải lịch sử tin nhắn
+    fetch('/api/chat/history')
+        .then(response => response.json())
+        .then(messages => {
+            messages.forEach(message => {
+                displayMessage(message); // Hiển thị từng tin nhắn
+            });
+        })
+        .catch(error => {
+            console.error('Error loading chat history:', error);
+        });
 }
+function displayMessage(message) {
+    var messageElement = document.createElement('li');
+
+    if (message.type === 'JOIN' || message.type === 'LEAVE') {
+        messageElement.classList.add('event-message');
+        messageElement.innerText = message.content;
+    } else {
+        messageElement.classList.add(message.sender === username ? 'my-message' : 'other-message');
+
+        var usernameElement = document.createElement('span');
+        usernameElement.innerText = message.sender;
+        usernameElement.classList.add('sender-name');
+        messageElement.appendChild(usernameElement);
+
+        var textElement = document.createElement('p');
+        textElement.innerText = message.content;
+        messageElement.appendChild(textElement);
+
+        // Hiển thị thời gian
+        var timestampElement = document.createElement('span');
+        var date = new Date(message.timestamp); // Chuyển đổi từ UNIX timestamp
+        timestampElement.innerText = date.toLocaleString(); // Định dạng thời gian
+        timestampElement.classList.add('timestamp');
+        messageElement.appendChild(timestampElement);
+    }
+
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+}
+
+
+
 
 
 function onError(error) {
@@ -113,6 +157,7 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
 
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)

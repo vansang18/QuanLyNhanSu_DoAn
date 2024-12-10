@@ -1,10 +1,10 @@
-<div class="header">
+<div class="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="company-name">STC</div>
     <div class="dropdown">
         <a class="text-white dropdown-toggle d-flex align-items-center" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-user me-2"></i>
             <!-- Hiển thị tên nhân viên -->
-            <span th:text="${employee.firstName} + ' ' + ${employee.lastName}">Tên Nhân Viên</span>
+            Xin chào, <span sec:authentication="name" ></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
