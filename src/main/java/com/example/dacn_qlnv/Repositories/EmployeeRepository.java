@@ -4,6 +4,7 @@ import com.example.dacn_qlnv.Models.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // Phương thức để tìm nhân viên đang làm việc
@@ -11,5 +12,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByIsResignedFalse();
     List<Employee> findByIsResignedTrue();
     Employee findByEmail(String email);
-    Employee findByUsername(String username);
+    Optional<Employee> findByUsername(String username);
 }

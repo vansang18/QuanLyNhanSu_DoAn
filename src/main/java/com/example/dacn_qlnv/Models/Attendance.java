@@ -2,66 +2,72 @@ package com.example.dacn_qlnv.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Date;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "attendance")//cham cong
+@Table(name = "attendance")
 public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Liên kết với bảng Employee
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @Column(name = "date", nullable = false) //Ngày hôm đó
+    // Ngày điểm danh
+    @Column(name = "date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    @Column(name = "check_in_time")            //Giờ vào làm
+    // Giờ vào làm
+    @Column(name = "check_in_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date checkInTime;
 
-    @Column(name = "check_out_time")           //Giờ nghỉ
+    // Giờ nghỉ làm
+    @Column(name = "check_out_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date checkOutTime;
 
-    @Column(name = "total_hours")               //Tổng giờ làm
+    // Tổng số giờ làm việc
+    @Column(name = "total_hours")
     private Double totalHours;
 
-    @Column(name = "checked_in", nullable = true)
-    private Boolean checkedIn = false; // Đã checkin
+    // Trạng thái đã điểm danh
+    @Column(name = "checked_in", nullable = false)
+    private Boolean checkedIn = false;
 
-    @Column(name = "checked_out", nullable = true)
-    private Boolean checkedOut = false; // Đã checkout
+    // Trạng thái đã nghỉ làm
+    @Column(name = "checked_out", nullable = false)
+    private Boolean checkedOut = false;
 
-    @Column(name = "has_permission", nullable = true) // Có phép
-    private Boolean hasPermission = false; // true: có phép
+    // Có phép
+    @Column(name = "has_permission", nullable = true)
+    private Boolean hasPermission = false;
 
-    @Column(name = "no_permission", nullable = true) // Không phép
-    private Boolean noPermission = false; // true: không phép
+    // Không phép
+    @Column(name = "no_permission", nullable = true)
+    private Boolean noPermission = false;
 
-
+    // Có trễ giờ
     @Column(name = "is_late", nullable = true)
-    private Boolean isLate = false; // Trễ
+    private Boolean isLate = false;
 
-    public void setEmployeeId(Long employeeId) {
-
+    // Phương thức để tính tổng số giờ làm việc
+    public void calculateTotalHours() {
+        if (checkInTime != null && checkOutTime != null) {
+            long duration = checkOutTime.getTime() - checkInTime.getTime();
+            this.totalHours = duration / (1000.0 * 60.0 * 60.0); // Chuyển sang giờ
+        } else {
+            this.totalHours = 0.0;
+        }
     }
-
-    public void setLate(boolean b) {
-
-    }
-
-    public void setAbsent(boolean b) {
-
-    }
-
-    // Getters and setters
-    // Constructors
 }

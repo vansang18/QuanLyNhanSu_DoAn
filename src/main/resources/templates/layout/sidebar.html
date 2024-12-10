@@ -1,26 +1,42 @@
-<div class="sidebar">
-    <!-- Collapse Quản lý nhân viên -->
-    <a class="d-flex align-items-center" data-bs-toggle="collapse" href="#employeeManagementCollapse" role="button" aria-expanded="false" aria-controls="employeeManagementCollapse">
-        <i class="fas fa-users"></i> Quản lý nhân viên
-    </a>
-    <div class="collapse" id="employeeManagementCollapse">
-        <ul class="list-unstyled ms-3">
-            <li><a href="/employees/list" class="dropdown-item">Nhân viên đang làm việc</a></li>
-            <li><a href="/employees/resigned" class="dropdown-item">Nhân viên đã nghỉ việc</a></li>
-        </ul>
+<div class="sidebar" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <!-- Phân quyền ADMIN cho Quản lý nhân viên -->
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <a class="d-flex align-items-center" data-bs-toggle="collapse" href="#employeeManagementCollapse" role="button" aria-expanded="false" aria-controls="employeeManagementCollapse">
+            <i class="fas fa-users"></i> Quản lý nhân viên
+        </a>
+        <div class="collapse" id="employeeManagementCollapse">
+            <ul class="list-unstyled ms-3">
+                <li><a href="/employees/list" class="dropdown-item">Nhân viên đang làm việc</a></li>
+                <li><a href="/employees/resigned" class="dropdown-item">Nhân viên đã nghỉ việc</a></li>
+            </ul>
+        </div>
     </div>
 
-    <a href="/departments/list"><i class="fas fa-building"></i> Quản lý phòng ban</a>
-    <a href="#"><i class="fas fa-building"></i>Chấm công</a>
-
-    <!-- Collapse Quản lý lương -->
-    <a class="d-flex align-items-center" data-bs-toggle="collapse" href="#salaryManagementCollapse" role="button" aria-expanded="false" aria-controls="salaryManagementCollapse">
-        <i class="fas fa-money-bill"></i> Quản lý lương
+    <!-- Phân quyền ADMIN và MANAGER cho Quản lý phòng ban -->
+    <a href="/departments/list" sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
+        <i class="fas fa-building"></i> Quản lý phòng ban
     </a>
-    <div class="collapse" id="salaryManagementCollapse">
-        <ul class="list-unstyled ms-3">
-            <li><a href="/salary/calculate" class="dropdown-item">Tính lương</a></li>
-            <li><a href="/salary/send" class="dropdown-item">Gửi lương</a></li>
-        </ul>
+
+    <!-- Phân quyền tất cả người dùng có quyền USER cho Chấm công -->
+    <a href="/attendance">
+        <i class="fas fa-calendar-check"></i> Chấm công
+    </a>
+    <!-- Phân quyền ADMIN cho Quản lý lương -->
+    <div>
+        <!-- Quản lý lương -->
+        <a class="d-flex align-items-center" data-bs-toggle="collapse" href="#salaryManagementCollapse" role="button" aria-expanded="false" aria-controls="salaryManagementCollapse">
+            <i class="fas fa-money-bill"></i> Quản lý lương
+        </a>
+        <div class="collapse" id="salaryManagementCollapse">
+            <ul class="list-unstyled ms-3">
+                <!-- Mục tính lương: Không yêu cầu quyền -->
+                <li><a href="/salary" class="dropdown-item">Tính lương</a></li>
+
+                <!-- Mục gửi lương: Yêu cầu quyền ADMIN -->
+                <li sec:authorize="hasAnyAuthority('ADMIN')">
+                    <a href="/salary/send" class="dropdown-item">Gửi lương</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

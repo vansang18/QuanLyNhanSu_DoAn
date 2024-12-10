@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Điểm Danh</title>
+    <link rel="stylesheet" href="/css/attendance.css">
+</head>
+<body>
+<div class="container">
+    <h1>Quản Lý Điểm Danh</h1>
+    <div class="attendance-section">
+        <button id="checkin-btn" class="btn primary">Điểm danh hôm nay</button>
+        <p id="checkin-status"></p>
+    </div>
+
+    <div class="summary-section">
+        <h2>Tổng Số Ngày Điểm Danh</h2>
+        <div class="summary-item">
+            <label for="month">Tháng:</label>
+            <input type="number" id="month" placeholder="Nhập tháng (1-12)" min="1" max="12">
+        </div>
+        <div class="summary-item">
+            <label for="year">Năm:</label>
+            <input type="number" id="year" placeholder="Nhập năm" value="2024">
+        </div>
+        <button id="get-summary-btn" class="btn primary">Xem Tổng Kết</button>
+
+        <div class="summary-result">
+            <p><strong>Tổng số ngày điểm danh trong tháng:</strong> <span id="monthly-count">0</span></p>
+            <p><strong>Tổng số ngày điểm danh trong năm:</strong> <span id="yearly-count">0</span></p>
+        </div>
+    </div>
+
+    <!-- Nút quay lại trang chủ -->
+    <div class="back-button">
+        <a href="/" class="btn secondary">Quay lại Trang Chủ</a>
+    </div>
+</div>
+<script src="/js/attendance.js"></script>
+</body>
+</html>

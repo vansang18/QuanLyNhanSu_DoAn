@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tính Lương Nhân Viên</title>
+  <link rel="stylesheet" href="/css/salary.css">
+</head>
+<body>
+<!-- Header -->
+
+
+<!-- Nội dung chính -->
+<div class="container">
+  <h1>Tính Lương Nhân Viên</h1>
+  <div class="salary-section">
+    <div class="form-group">
+      <label for="month">Tháng:</label>
+      <input type="number" id="month" placeholder="Nhập tháng (1-12)" min="1" max="12">
+    </div>
+    <div class="form-group">
+      <label for="year">Năm:</label>
+      <input type="number" id="year" placeholder="Nhập năm" value="2024">
+    </div>
+    <button id="calculate-salary-btn" class="btn primary">Tính Lương</button>
+    <p><strong>Lương Tháng:</strong> <span id="monthly-salary">0</span> VND</p>
+  </div>
+
+  <!-- Nút quay lại -->
+  <div class="back-button">
+    <a href="/" class="btn secondary">Quay lại Trang Chủ</a>
+  </div>
+</div>
+
+<script src="/js/salary.js"></script>
+</body>
+</html>
