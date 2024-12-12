@@ -29,13 +29,12 @@ public class EmployeeController {
     @Autowired
     private DepartmentService departmentService;
 
-
-
-
     @GetMapping("/list")
-    public String listEmployees(Model model) {
+    public String listEmployees(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<Employee> activeEmployees = employeeService.getActiveEmployees();
+        List<Employee> employees = employeeService.searchEmployees(keyword);
         model.addAttribute("activeEmployees", activeEmployees);
+        model.addAttribute("keyword", keyword);
         return "employees/employeeList";
     }
     @GetMapping("/add")
@@ -75,7 +74,7 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-    @ModelAttribute
+    /*@ModelAttribute
     public void addEmployeeToModel(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -86,6 +85,6 @@ public class EmployeeController {
                 model.addAttribute("employee", employee);
             }
         }
-    }
+    }*/
 
 }

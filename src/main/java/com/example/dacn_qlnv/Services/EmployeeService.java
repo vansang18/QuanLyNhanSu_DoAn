@@ -33,6 +33,7 @@ public class EmployeeService implements UserDetailsService {
     private MailService mailService;
 
 
+
     // Phương thức để lấy danh sách nhân viên đang làm việc
     public List<Employee> getActiveEmployees() {
         return employeeRepository.findByIsResignedFalse();
@@ -65,6 +66,14 @@ public class EmployeeService implements UserDetailsService {
             existingEmployee.setSalary(updatedEmployee.getSalary());
             employeeRepository.save(existingEmployee);
         }
+    }
+
+
+    public List<Employee> searchEmployees(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return employeeRepository.findAll(); // Nếu không có từ khóa, trả về tất cả nhân viên
+        }
+        return employeeRepository.searchByKeyword(keyword);
     }
 
     public void deleteEmployee(Long id) {

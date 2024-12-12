@@ -68,6 +68,18 @@ public class Employee implements UserDetails {
     @Column(name = "resignation_date")
     private Date resignationDate;
 
+    public String getStatus() {
+        return isResigned ? "Nghỉ việc" : "Đang làm việc";
+    }
+    public boolean getResigned() {
+        return isResigned;
+    }
+
+    // Setter
+    public void setResigned(boolean resigned) {
+        this.isResigned = resigned;
+    }
+
     @JsonIgnore
     @Column(name = "password", nullable = false) // Add password field
     private String password;
