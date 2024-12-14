@@ -3,6 +3,7 @@ package com.example.dacn_qlnv.Models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -33,15 +34,20 @@ public class Employee implements UserDetails {
     private String username;
 
     @Column(name = "first_name", nullable = false)
+    @NotBlank(message = "First name is required")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "First name must not contain numbers")
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
+    @NotBlank(message = "Last name is required")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must not contain numbers")
     private String lastName;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone_number")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be exactly 10 digits and contain no letters")
     private String phoneNumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -67,18 +73,6 @@ public class Employee implements UserDetails {
 
     @Column(name = "resignation_date")
     private Date resignationDate;
-
-    public String getStatus() {
-        return isResigned ? "Nghỉ việc" : "Đang làm việc";
-    }
-    public boolean getResigned() {
-        return isResigned;
-    }
-
-    // Setter
-    public void setResigned(boolean resigned) {
-        this.isResigned = resigned;
-    }
 
     @JsonIgnore
     @Column(name = "password", nullable = false) // Add password field
