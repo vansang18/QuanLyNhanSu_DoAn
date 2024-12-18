@@ -5,6 +5,7 @@ import com.example.dacn_qlnv.Models.Employee;
 import com.example.dacn_qlnv.Services.DepartmentService;
 import com.example.dacn_qlnv.Services.EmployeeService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,13 +31,12 @@ public class EmployeeController {
     @Autowired
     private DepartmentService departmentService;
 
-
-
-
     @GetMapping("/list")
-    public String listEmployees(Model model) {
+    public String listEmployees(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<Employee> activeEmployees = employeeService.getActiveEmployees();
+        //List<Employee> employees = employeeService.searchEmployees(keyword);
         model.addAttribute("activeEmployees", activeEmployees);
+        model.addAttribute("keyword", keyword);
         return "employees/employeeList";
     }
     @GetMapping("/add")
@@ -46,7 +47,16 @@ public class EmployeeController {
         return "employees/addEmployee";
     }
     @PostMapping("/add")
-    public String addEmployee(@ModelAttribute("employee") Employee employee) {
+    public String addEmployee(@ModelAttribute("employee") @Valid Employee employee,
+                              BindingResult result,
+                              Model model) {
+       /* employeeService.saveEmployee(employee);
+        return "redirect:/employees/list";*/
+        if (result.hasErrors()) {
+            List<Department> departments = departmentService.getAllDepartments();
+            model.addAttribute("departments", departments);
+            return "employees/addEmployee"; // Quay lại form thêm nhân viên
+        }
         employeeService.saveEmployee(employee);
         return "redirect:/employees/list";
     }
@@ -59,7 +69,18 @@ public class EmployeeController {
         return "employees/editEmployee";
     }
     @PostMapping("/edit/{id}")
-    public String updateEmployee(@PathVariable Long id, @ModelAttribute("employee") Employee employee) {
+    public String updateEmployee(@PathVariable Long id,
+                                 @ModelAttribute("employee") @Valid Employee employee,
+                                 BindingResult result,
+                                 Model model) {
+       /* employeeService.updateEmployee(id, employee);
+        return "redirect:/employees/list";*/
+        if (result.hasErrors()) {
+            List<Department> departments = departmentService.getAllDepartments();
+            model.addAttribute("departments", departments);
+            model.addAttribute("employee", employee);
+            return "employees/editEmployee"; // Quay lại form chỉnh sửa nhân viên
+        }
         employeeService.updateEmployee(id, employee);
         return "redirect:/employees/list";
     }
@@ -75,7 +96,7 @@ public class EmployeeController {
         model.addAttribute("resignedEmployees", resignedEmployees);
         return "employees/resignedEmployeeList";
     }
-    @ModelAttribute
+    /*@ModelAttribute
     public void addEmployeeToModel(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -86,6 +107,6 @@ public class EmployeeController {
                 model.addAttribute("employee", employee);
             }
         }
-    }
+    }*/
 
 }

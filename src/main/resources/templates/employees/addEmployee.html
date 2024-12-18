@@ -79,6 +79,11 @@
         <input type="password" class="form-control" id="password" th:field="*{password}" required>
       </div>
 
+      <div class="mb-3">
+        <label for="salary" class="form-label">Lương</label>
+        <input type="number" class="form-control" id="salary" th:field="*{salary}" step="0.01">
+      </div>
+
       <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
   </div>
