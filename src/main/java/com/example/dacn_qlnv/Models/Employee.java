@@ -74,6 +74,9 @@ public class Employee implements UserDetails {
     @Column(name = "reset_token", length = 250)
     private String resetToken; // Thêm trường resetToken
 
+    @Column(name = "avatar")
+    private String avatar; // URL hoặc đường dẫn ảnh đại diện
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "employee_role",
             joinColumns = @JoinColumn(name = "employee_id"),

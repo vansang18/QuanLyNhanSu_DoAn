@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +90,19 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return "redirect:/employees/list";
     }
+
+    @GetMapping("/resign/{id}")
+    public String resignEmployee(@PathVariable Long id) {
+        // Lấy thông tin nhân viên theo ID
+        Employee employee = employeeService.getEmployeeById(id);
+        if (employee != null) {
+            employee.setResigned(true); // Đánh dấu trạng thái nghỉ việc
+            employee.setResignationDate(new Date()); // Ghi lại ngày nghỉ việc
+            employeeService.saveEmployee(employee); // Lưu thông tin thay đổi
+        }
+        return "redirect:/employees/list"; // Quay lại danh sách nhân viên
+    }
+
 
     @GetMapping("/resigned")
     public String listResignedEmployees(Model model) {

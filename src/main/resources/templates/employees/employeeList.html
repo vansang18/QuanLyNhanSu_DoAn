@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách Nhân viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -19,38 +18,36 @@
     <th:block th:replace="layout/sidebar.html"></th:block>
 
     <div class="content">
-        <h1>Chào mừng đến trang Danh sách Nhân viên!</h1>
+        <h1>Danh sách Nhân viên</h1>
         <div class="mb-3">
             <a th:href="@{/employees/add}" class="btn btn-success">
                 <i class="fas fa-plus"></i> Thêm Nhân viên
             </a>
         </div>
-        <!-- Danh sách nhân viên -->
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Ngày vào làm</th>
-                <th>Hành động</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="employee : ${activeEmployees}">
-                <td th:text="${employee.id}"></td>
-                <td th:text="${employee.firstName} + ' ' + ${employee.lastName}"></td>
-                <td th:text="${employee.email}"></td>
-                <td th:text="${employee.phoneNumber}"></td>
-                <td th:text="${#dates.format(employee.hireDate, 'dd/MM/yyyy')}"></td>
-                <td>
-                    <a th:href="@{/employees/edit/{id}(id=${employee.id})}" class="btn btn-primary">Chỉnh sửa</a>
-                    <a th:href="@{/employees/delete/{id}(id=${employee.id})}" class="btn btn-danger">Xóa</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <!-- Danh sách nhân viên dạng lưới -->
+        <div class="row">
+            <div class="col-6 col-md-4 col-lg-3 text-center mb-4" th:each="employee : ${activeEmployees}">
+                <!-- Hiển thị ảnh nhân viên -->
+                <img th:src="${employee.avatar != null ? employee.avatar : '/images/default-avatar.png'}"
+                     alt="Avatar" class="img-thumbnail"
+                     style="width: 120px; height: 120px; object-fit: cover;">
+                <!-- Hiển thị tên nhân viên -->
+                <h6 class="mt-2" th:text="${employee.firstName} + ' ' + ${employee.lastName}"></h6>
+                <!-- Nút chỉnh sửa -->
+                <a th:href="@{/employees/edit/{id}(id=${employee.id})}" class="btn btn-primary btn-sm mt-2">
+                    Chỉnh sửa
+                </a>
+                <!-- Nút cho nghỉ việc -->
+                <a th:href="@{/employees/resign/{id}(id=${employee.id})}"
+                   class="btn btn-danger btn-sm mt-2"
+                   onclick="return confirm('Bạn có chắc chắn muốn cho nhân viên này nghỉ việc?');">
+                    Cho Nghỉ Việc
+                </a>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
