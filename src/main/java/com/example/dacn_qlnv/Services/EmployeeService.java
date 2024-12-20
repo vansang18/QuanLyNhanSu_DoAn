@@ -32,6 +32,10 @@ public class EmployeeService implements UserDetailsService {
     @Autowired
     private MailService mailService;
 
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
 
     // Phương thức để lấy danh sách nhân viên đang làm việc
     public List<Employee> getActiveEmployees() {

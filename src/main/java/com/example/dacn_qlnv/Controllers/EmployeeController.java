@@ -34,9 +34,9 @@ public class EmployeeController {
 
     @GetMapping("/list")
     public String listEmployees(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<Employee> activeEmployees = employeeService.getActiveEmployees();
+        List<Employee> allEmployees = employeeService.getAllEmployees();
         //List<Employee> employees = employeeService.searchEmployees(keyword);
-        model.addAttribute("activeEmployees", activeEmployees);
+        model.addAttribute("employees", allEmployees);
         model.addAttribute("keyword", keyword);
         return "employees/employeeList";
     }
