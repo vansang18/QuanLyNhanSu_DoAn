@@ -90,6 +90,18 @@ public class Employee implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
     }
+
+    public String getRoleName() {
+        if (roles.stream().anyMatch(role -> role.getName().equalsIgnoreCase("ADMIN"))) {
+            return "Quản trị viên";
+        } else if (roles.stream().anyMatch(role -> role.getName().equalsIgnoreCase("STAFF"))) {
+            return "Nhân viên cao cấp";
+        } else {
+            return "Nhân viên";
+        }
+    }
+
+
     @Override
     public String getPassword() {
         return password;

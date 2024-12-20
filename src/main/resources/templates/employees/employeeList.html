@@ -102,11 +102,13 @@
                 <td th:text="${employee.email}"></td>
                 <td th:text="${employee.phoneNumber}"></td>
                 <td>
-                            <span class="status-btn"
-                                  th:classappend="${employee.roles.contains('ADMIN')} ? 'bg-success' : 'bg-info'"
-                                  th:text="${employee.roles.contains('ADMIN')} ? 'Quản trị viên' : 'Nhân viên'">
-                            </span>
+    <span class="status-btn"
+          th:classappend="${employee.roleName == 'Quản trị viên'} ? 'bg-success' :
+                          (employee.roleName == 'Quản Lý' ? 'bg-primary' : 'bg-info')"
+          th:text="${employee.roleName}">
+    </span>
                 </td>
+
                 <td>
                             <span class="status-btn"
                                   th:classappend="${employee.isResigned} ? 'bg-secondary' : 'bg-success'"
