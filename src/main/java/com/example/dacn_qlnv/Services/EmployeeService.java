@@ -81,10 +81,17 @@ public class EmployeeService implements UserDetailsService {
         );
     }
     @Override
-    public UserDetails loadUserByUsername(String username) throws
-            UsernameNotFoundException {
-        var employee = employeeRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Tìm nhân viên dựa trên username
+        Employee employee = employeeRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Kiểm tra trạng thái nghỉ việc
+        if (employee.isResigned()) {
+            throw new UsernameNotFoundException("User has resigned and cannot log in");
+        }
+
+        // Trả về thông tin UserDetails cho Spring Security
         return org.springframework.security.core.userdetails.User
                 .withUsername(employee.getUsername())
                 .password(employee.getPassword())
@@ -95,6 +102,7 @@ public class EmployeeService implements UserDetailsService {
                 .disabled(!employee.isEnabled())
                 .build();
     }
+
 
     // Tìm kiếm người dùng dựa trên tên đăng nhập.
     public Optional<Employee> findByUsername(String username) throws UsernameNotFoundException {
@@ -139,6 +147,10 @@ public class EmployeeService implements UserDetailsService {
             employee.setResetToken(null);
             employeeRepository.save(employee);
         }
+    }
+
+    public Optional<Employee> findByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 
 }

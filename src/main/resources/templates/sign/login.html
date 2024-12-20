@@ -25,8 +25,18 @@
     <h2>Đăng nhập</h2>
 
     <!-- Hiển thị thông báo lỗi nếu có -->
-    <div th:if="${error}" class="alert alert-danger">
-        Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu của bạn.
+    <div th:if="${param.error}" class="alert alert-danger">
+        Đăng nhập thất bại.
+        <ul>
+            <li>Tài khoản không tồn tại.</li>
+            <li>Tài khoản đã nghỉ việc.</li>
+            <li>Mật khẩu không chính xác.</li>
+        </ul>
+    </div>
+
+    <!-- Hiển thị thông báo khi đăng xuất -->
+    <div th:if="${param.logout}" class="alert alert-success">
+        Bạn đã đăng xuất thành công.
     </div>
 
     <form action="/login" method="post">
@@ -41,7 +51,7 @@
         <button type="submit" class="btn btn-primary">Đăng nhập</button>
     </form>
     <div class="forgot-password text-center mt-3">
-        <a href="#">Quên mật khẩu?</a>
+        <a href="/forgot-password">Quên mật khẩu?</a>
     </div>
 </div>
 
