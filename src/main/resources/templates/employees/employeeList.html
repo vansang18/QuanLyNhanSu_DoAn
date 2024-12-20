@@ -103,7 +103,7 @@
                 <td th:text="${employee.phoneNumber}"></td>
                 <td>
     <span class="status-btn"
-          th:classappend="${employee.roleName == 'Quản trị viên'} ? 'bg-success' :
+          th:classappend="${employee.roleName == 'Quản trị viên'} ? 'bg-primary' :
                           (employee.roleName == 'Quản Lý' ? 'bg-primary' : 'bg-info')"
           th:text="${employee.roleName}">
     </span>
