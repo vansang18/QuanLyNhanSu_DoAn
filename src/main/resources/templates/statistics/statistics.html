@@ -31,6 +31,11 @@
             background-color: #007bff;
             color: white;
         }
+
+        .card {
+            max-width: 95%;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -42,89 +47,95 @@
     <!-- Include Sidebar -->
     <th:block th:replace="layout/sidebar.html"></th:block>
 
-    <div class="content container mt-5">
-        <h1 class="text-center mb-4">Thống kê</h1>
+    <div class="content container-fluid mt-5 px-5">
+        <div class="row justify-content-center">
+            <div class="col-md-11"> <!-- Tăng col-md để mở rộng nội dung -->
+                <div class="card shadow-lg p-4">
+                    <h1 class="text-center mb-4">Thống kê</h1>
 
-        <!-- Tab Buttons -->
-        <div class="text-center mb-4">
-            <button class="btn btn-outline-primary tab-btn active-btn" onclick="showTab('salaryTab', this)">Lương cao nhất</button>
-            <button class="btn btn-outline-primary tab-btn" onclick="showTab('attendanceTab', this)">Điểm danh đầy đủ nhất</button>
-            <button class="btn btn-outline-primary tab-btn" onclick="showTab('departmentTab', this)">Số lượng nhân viên các bộ phận</button>
-        </div>
+                    <!-- Tab Buttons -->
+                    <div class="text-center mb-4">
+                        <button class="btn btn-outline-primary tab-btn active-btn" onclick="showTab('salaryTab', this)">Lương cao nhất</button>
+                        <button class="btn btn-outline-primary tab-btn" onclick="showTab('attendanceTab', this)">Điểm danh đầy đủ nhất</button>
+                        <button class="btn btn-outline-primary tab-btn" onclick="showTab('departmentTab', this)">Số lượng nhân viên các bộ phận</button>
+                    </div>
 
-        <!-- Thống kê lương cao nhất -->
-        <div id="salaryTab" class="tab-content active-tab">
-            <h3>Nhân viên có lương cao nhất</h3>
-            <table class="table table-bordered employee-table">
-                <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Ảnh</th>
-                    <th>Tên nhân viên</th>
-                    <th>Phòng ban</th>
-                    <th>Lương</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="employee, iterStat : ${topSalaries}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td>
-                        <img th:src="@{/images/{avatar}(avatar=${employee.avatar != null ? employee.avatar : 'default-avatar.png'})}"
-                             alt="Avatar">
-                    </td>
-                    <td th:text="${employee.firstName + ' ' + employee.lastName}"></td>
-                    <td th:text="${employee.department.name}"></td>
-                    <td th:text="${#numbers.formatDecimal(employee.salary, 0, 'COMMA', 2, 'POINT')}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    <!-- Thống kê lương cao nhất -->
+                    <div id="salaryTab" class="tab-content active-tab">
+                        <h3>Nhân viên có lương cao nhất</h3>
+                        <table class="table table-bordered employee-table w-100">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Ảnh</th>
+                                <th>Tên nhân viên</th>
+                                <th>Phòng ban</th>
+                                <th>Lương</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="employee, iterStat : ${topSalaries}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td>
+                                    <img th:src="@{/images/{avatar}(avatar=${employee.avatar != null ? employee.avatar : 'default-avatar.png'})}"
+                                         alt="Avatar">
+                                </td>
+                                <td th:text="${employee.firstName + ' ' + employee.lastName}"></td>
+                                <td th:text="${employee.department.name}"></td>
+                                <td th:text="${#numbers.formatDecimal(employee.salary, 0, 'COMMA', 2, 'POINT')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-        <!-- Thống kê điểm danh cao nhất -->
-        <div id="attendanceTab" class="tab-content">
-            <h3>Nhân viên có số ngày điểm danh cao nhất</h3>
-            <table class="table table-bordered employee-table">
-                <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Ảnh</th>
-                    <th>Tên nhân viên</th>
-                    <th>Phòng ban</th>
-                    <th>Số ngày điểm danh</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="entry, iterStat : ${topAttendance}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td>
-                        <img th:src="@{/images/{avatar}(avatar=${entry.key.avatar != null ? entry.key.avatar : 'default-avatar.png'})}" alt="Avatar">
-                    </td>
-                    <td th:text="${entry.key.firstName + ' ' + entry.key.lastName}"></td>
-                    <td th:text="${entry.key.department.name}"></td>
-                    <td th:text="${entry.value}"></td>
-                </tr>
+                    <!-- Thống kê điểm danh cao nhất -->
+                    <div id="attendanceTab" class="tab-content">
+                        <h3>Nhân viên có số ngày điểm danh cao nhất</h3>
+                        <table class="table table-bordered employee-table w-100">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Ảnh</th>
+                                <th>Tên nhân viên</th>
+                                <th>Phòng ban</th>
+                                <th>Số ngày điểm danh</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="entry, iterStat : ${topAttendance}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td>
+                                    <img th:src="@{/images/{avatar}(avatar=${entry.key.avatar != null ? entry.key.avatar : 'default-avatar.png'})}" alt="Avatar">
+                                </td>
+                                <td th:text="${entry.key.firstName + ' ' + entry.key.lastName}"></td>
+                                <td th:text="${entry.key.department.name}"></td>
+                                <td th:text="${entry.value}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                </tbody>
-            </table>
-        </div>
+                    <!-- Thống kê nhân viên theo phòng ban -->
+                    <div id="departmentTab" class="tab-content">
+                        <h3>Số lượng nhân viên theo phòng ban</h3>
+                        <table class="table table-bordered employee-table w-100">
+                            <thead>
+                            <tr>
+                                <th>Phòng ban</th>
+                                <th>Số lượng nhân viên</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="entry : ${employeeCountByDept}">
+                                <td th:text="${entry.key}"></td>
+                                <td th:text="${entry.value}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-        <!-- Thống kê nhân viên theo phòng ban -->
-        <div id="departmentTab" class="tab-content">
-            <h3>Số lượng nhân viên theo phòng ban</h3>
-            <table class="table table-bordered employee-table">
-                <thead>
-                <tr>
-                    <th>Phòng ban</th>
-                    <th>Số lượng nhân viên</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="entry : ${employeeCountByDept}">
-                    <td th:text="${entry.key}"></td>
-                    <td th:text="${entry.value}"></td>
-                </tr>
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
