@@ -34,9 +34,13 @@
 
                 <!-- Mục gửi lương: Yêu cầu quyền ADMIN -->
                 <li sec:authorize="hasAnyAuthority('ADMIN')">
-                    <a href="/salary/send" class="dropdown-item">Gửi lương</a>
+                    <a href="#" class="dropdown-item">Gửi lương</a>
                 </li>
             </ul>
         </div>
     </div>
+    <!-- Phân quyền ADMIN và MANAGER cho Thống kê -->
+    <a href="/statistics" sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
+        <i class="fas fa-building"></i>Thống Kê
+    </a>
 </div>
