@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,17 +52,17 @@ public class EmployeeController {
     @PostMapping("/add")
     public String addEmployee(@ModelAttribute("employee") @Valid Employee employee,
                               BindingResult result,
-                              Model model) {
-       /* employeeService.saveEmployee(employee);
-        return "redirect:/employees/list";*/
+                              @RequestParam("file") MultipartFile file,
+                              Model model) throws IOException {
         if (result.hasErrors()) {
             List<Department> departments = departmentService.getAllDepartments();
             model.addAttribute("departments", departments);
-            return "employees/addEmployee"; // Quay lại form thêm nhân viên
+            return "employees/addEmployee";
         }
-        employeeService.saveEmployee(employee);
+        employeeService.saveEmployee(employee, file);
         return "redirect:/employees/list";
     }
+
     @GetMapping("/edit/{id}")
     public String showEditEmployeeForm(@PathVariable Long id, Model model) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -73,16 +75,14 @@ public class EmployeeController {
     public String updateEmployee(@PathVariable Long id,
                                  @ModelAttribute("employee") @Valid Employee employee,
                                  BindingResult result,
-                                 Model model) {
-       /* employeeService.updateEmployee(id, employee);
-        return "redirect:/employees/list";*/
+                                 @RequestParam("file") MultipartFile file,
+                                 Model model) throws IOException {
         if (result.hasErrors()) {
             List<Department> departments = departmentService.getAllDepartments();
             model.addAttribute("departments", departments);
-            model.addAttribute("employee", employee);
-            return "employees/editEmployee"; // Quay lại form chỉnh sửa nhân viên
+            return "employees/editEmployee";
         }
-        employeeService.updateEmployee(id, employee);
+        employeeService.updateEmployee(id, employee, file);
         return "redirect:/employees/list";
     }
     @GetMapping("/delete/{id}")

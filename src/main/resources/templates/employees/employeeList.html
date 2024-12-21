@@ -95,8 +95,9 @@
             <tr th:each="employee, iterStat : ${employees}">
                 <td th:text="${iterStat.index + 1}"></td>
                 <td>
-                    <img th:src="${employee.avatar != null ? employee.avatar : '/images/default-avatar.png'}" alt="Avatar">
+                    <img th:src="@{/images/{avatar}(avatar=${employee.avatar != null ? employee.avatar : 'default-avatar.png'})}" alt="Avatar">
                 </td>
+
                 <td th:text="${employee.firstName}"></td>
                 <td th:text="${employee.lastName}"></td>
                 <td th:text="${employee.email}"></td>

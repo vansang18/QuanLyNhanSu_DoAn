@@ -13,7 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +34,9 @@ public class EmployeeService implements UserDetailsService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private HandleImage handleImage;
+
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
@@ -46,8 +51,15 @@ public class EmployeeService implements UserDetailsService {
         return employeeRepository.findByIsResignedTrue();
     }
 
-    public void saveEmployee(Employee employee) {
+    public void saveEmployee(Employee employee, MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String fileName = handleImage.saveImage(file);
+            employee.setAvatar(fileName); // Lưu tên file vào avatar
+        }
         employee.setPassword(new BCryptPasswordEncoder().encode(employee.getPassword()));
+        employeeRepository.save(employee);
+    }
+    public void saveEmployee(Employee employee) {
         employeeRepository.save(employee);
     }
 
@@ -55,7 +67,7 @@ public class EmployeeService implements UserDetailsService {
         return employeeRepository.findById(id).orElse(null);
     }
 
-    public void updateEmployee(Long id, Employee updatedEmployee) {
+    public void updateEmployee(Long id, Employee updatedEmployee, MultipartFile file) throws IOException {
         Employee existingEmployee = employeeRepository.findById(id).orElse(null);
         if (existingEmployee != null) {
             existingEmployee.setFirstName(updatedEmployee.getFirstName());
@@ -67,6 +79,11 @@ public class EmployeeService implements UserDetailsService {
             existingEmployee.setDepartment(updatedEmployee.getDepartment());
             existingEmployee.setHireDate(updatedEmployee.getHireDate());
             existingEmployee.setSalary(updatedEmployee.getSalary());
+
+            if (file != null && !file.isEmpty()) {
+                String fileName = handleImage.saveImage(file);
+                existingEmployee.setAvatar(fileName);
+            }
             employeeRepository.save(existingEmployee);
         }
     }

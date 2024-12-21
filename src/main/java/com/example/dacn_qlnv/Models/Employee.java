@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -74,8 +75,9 @@ public class Employee implements UserDetails {
     @Column(name = "reset_token", length = 250)
     private String resetToken; // Thêm trường resetToken
 
-    @Column(name = "avatar")
-    private String avatar; // URL hoặc đường dẫn ảnh đại diện
+    private String avatar; // Thêm trường này để lưu trữ URL hình ảnh
+    @Transient // Đánh dấu thuộc tính này không được lưu vào database
+    private MultipartFile file;
 
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "employee_role",
