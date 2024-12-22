@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class SalaryController {
 
-    // Ánh xạ URL /salary tới giao diện salary.html
+    // Ánh xạ URL /salary tới giao diện popup.html
     @GetMapping("/salary")
     public String getSalaryPage() {
         return "salary/salary"; // Tên file HTML trong thư mục static
