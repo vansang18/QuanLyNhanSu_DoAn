@@ -1,37 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tính Lương Nhân Viên</title>
-  <link rel="stylesheet" href="/css/salary.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Nhân viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/attendance.css">
 </head>
 <body>
-<!-- Header -->
 
+<!-- Include Header -->
+<th:block th:replace="layout/header.html"></th:block>
 
-<!-- Nội dung chính -->
-<div class="container">
-  <h1>Tính Lương Nhân Viên</h1>
-  <div class="salary-section">
-    <div class="form-group">
-      <label for="month">Tháng:</label>
-      <input type="number" id="month" placeholder="Nhập tháng (1-12)" min="1" max="12">
+<!-- Main Content -->
+<div class="main">
+    <!-- Include Sidebar -->
+    <th:block th:replace="layout/sidebar.html"></th:block>
+
+    <div class="content text-center">
+        <h1>Tính lương cho tài khoản: <span sec:authentication="name"></span></h1>
+
+        <!-- Nút mở popup tính lương -->
+        <button class="btn btn-primary mt-3" onclick="openSalaryModal()">
+            <i class="fas fa-calculator"></i> Tính Lương
+        </button>
     </div>
-    <div class="form-group">
-      <label for="year">Năm:</label>
-      <input type="number" id="year" placeholder="Nhập năm" value="2024">
-    </div>
-    <button id="calculate-salary-btn" class="btn primary">Tính Lương</button>
-    <p><strong>Lương Tháng:</strong> <span id="monthly-salary">0</span> VND</p>
-  </div>
-
-  <!-- Nút quay lại -->
-  <div class="back-button">
-    <a href="/" class="btn secondary">Quay lại Trang Chủ</a>
-  </div>
 </div>
 
+<!-- Popup Modal Tính Lương -->
+<div id="salaryModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tính Lương Nhân Viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="salary-section">
+                    <div class="form-group mb-3">
+                        <label for="month">Tháng:</label>
+                        <input type="number" id="month" class="form-control" placeholder="Nhập tháng (1-12)" min="1" max="12">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="year">Năm:</label>
+                        <input type="number" id="year" class="form-control" placeholder="Nhập năm" value="2024">
+                    </div>
+                    <button id="calculate-salary-btn" class="btn btn-success">Tính Lương</button>
+                    <p class="mt-3"><strong>Lương Tháng:</strong> <span id="monthly-salary">0</span> VND</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/salary.js"></script>
+
+<script>
+    // Hàm mở modal tính lương
+    function openSalaryModal() {
+        var modal = new bootstrap.Modal(document.getElementById('salaryModal'));
+        modal.show();
+    }
+
+    // Tính lương
+    document.getElementById('calculate-salary-btn').onclick = function () {
+        var month = document.getElementById('month').value;
+        var year = document.getElementById('year').value;
+
+        if (month >= 1 && month <= 12 && year > 2000) {
+            var salary = month * 1000000;  // Giả lập logic tính lương
+            document.getElementById('monthly-salary').textContent = salary.toLocaleString() + ' VND';
+        } else {
+            alert('Vui lòng nhập tháng và năm hợp lệ!');
+
+        }
+    };
+</script>
+
 </body>
 </html>
